@@ -107,15 +107,20 @@
 
     <div>
         <p>
-            First of all, coming from mostly Python lifestyle into this more extensive use of JS, I could tell you that it was a lot easier to import modules and access system feature in Python
-            as opposed to doing the same in-browser JS... Since Python works in system/server level, it has more access and privileges then importing modules and serving/loading files at
-            client/browser side.
-            The task itself was super self-explanatory and simple in my head. I had all the dots connected in my head. So, I though it was supposed to be a breeze. But what took me a lot of time
-            is making sure I can prove the concept on the web.
-            I wasted a lot of time trying to make XLSX read in a local project file under relative path... It kept getting stalled at reading line where I was not even getting console prints past
-            these calls. And on other more promising calls using:<br>
+            All code related for this project can be found at "public" GITHUB repository here:<a href="https://github.com/andreylisovskiy/linear_regress.git">https://github.com/andreylisovskiy/linear_regress.git</a>
+            <br><br><br>
+            Coming from mostly Python lifestyle, where I have spent most of my last few years, into this more extensive use of JS, where it is now used not only to change web elements
+            on my web app but also to do more data processing, I could tell you that it was a lot easier to import modules and access system feature in Python
+            as opposed to doing the same in-browser JS... Since Python works in system/server level, it has more access and privileges and rights than importing modules and loading files from
+            client/browser side with JS.<br>
+            It was quit a change for me as for my prior written tools I have outsourced most of the data processing and heavy lifting to python via Ajax calls to server script.
+            And left the JS in browser use to minimum, mostly used for UI and page dynamics.<br>
+            The task was super self-explanatory and simple in my head. I had all the dots connected. So, I thought it was supposed to be a breeze. But what took me a lot of time
+            is trying to hack a browser to allow me to load a local file for testing purposes.
+            Too much time was just wasted trying to make browser and XLSX happy about reading a local project file with relative path in project. It kept getting stalled without producing any
+            errors. And on some other more promising tries when using:<br>
             <code>let workbook = XLSX.read(file_path);</code><br><br>
-            It was giving me this error message where it looks like "t" object was being miss-used inside XLSX.full.min.js because it failed to read the file in:<br>
+            it was giving me this error message where it looks like "t" object was being miss-used inside XLSX.full.min.js because it failed to read the file in:<br>
             <img src="./media/image_1.PNG"><br><br>
             Fetch method was also getting blocked:<br><br>
             <img src="./media/image_2.PNG"><br><br>
@@ -124,8 +129,6 @@
             Thus, below on this page I have implemented the file explorer option which you can use to upload that excel/csv file with Boston Housing dataset.
 
 
-
-            All code related for this project can be found at "public" GITHUB repository here:<a href="https://github.com/andreylisovskiy/linear_regress.git">https://github.com/andreylisovskiy/linear_regress.git</a>
         </p>
     </div>
 
@@ -362,6 +365,26 @@
               reader.readAsArrayBuffer(file);
             }
 
+            async function getData() {
+              /* fetch file */
+              const carsDataResponse = await fetch("https://linear-regress.pages.dev/BostonHousing.xlsx");
+              /* get file data (ArrayBuffer) */
+              const carsDataAB = await carsDataResponse.arrayBuffer();
+              /* parse */
+              const carsDataWB = XLSX.read(carsDataAB);
+              /* get first worksheet */
+              const carsDataWS = carsDataWB.Sheets[carsDataWB.SheetNames[0]];
+              /* generate array of JS objects */
+              const carsData = XLSX.utils.sheet_to_json(carsDataWS);
+              const cleaned = carsData.map(car => ({
+                mpg: car.Miles_per_Gallon,
+                horsepower: car.Horsepower,
+              }))
+              .filter(car => (car.mpg != null && car.horsepower != null));
+
+              return cleaned;
+            }
+
             function main() {
                 // define defaults:
                 x_col_name = "crim";
@@ -371,23 +394,23 @@
 
                 $('#table_wrap').hide();
 
-                var url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
-
-                /* set up async GET request */
-                var req = new XMLHttpRequest();
-                req.open("GET", url, true);
-                req.responseType = "arraybuffer";
-
-                req.onload = function(e) {
-                  var workbook = XLSX.read(req.response);
-
-                  /* DO SOMETHING WITH workbook HERE */
-                    core_implementation(workbook);
-                };
-
-                req.send();
+                let clean_data = getData();
+                console.log(clean_data);
 
                 // failed attempts in browser:
+
+                // var url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
+                // /* set up async GET request */
+                // var req = new XMLHttpRequest();
+                // req.open("GET", url, true);
+                // req.responseType = "arraybuffer";
+                // req.onload = function(e) {
+                //   var workbook = XLSX.read(req.response);
+                //
+                //   /* DO SOMETHING WITH workbook HERE */
+                //     core_implementation(workbook);
+                // };
+                // req.send();
 
                 // (async() => {
                 //     const url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
