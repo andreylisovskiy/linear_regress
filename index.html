@@ -295,7 +295,7 @@
                 // generate y-points for linear regression line:
                 let line_equation = ss.linearRegressionLine(lin_coeff);
                 let y_line = eval_expression(line_equation, x);     // evaluates linear equation and gets us our Y points
-                console.log(y_line);
+                // console.log(y_line);
 
                 plot_comparison(x, y_data, x, y_line);
 
@@ -371,17 +371,34 @@
 
                 $('#table_wrap').hide();
 
-                (async() => {
-                    const url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
-                    const data = await (await fetch(url)).arrayBuffer();
-                    /* data is an ArrayBuffer */
-                    const workbook = XLSX.read(data);
+                var url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
 
-                    /* DO SOMETHING WITH workbook HERE */
+                /* set up async GET request */
+                var req = new XMLHttpRequest();
+                req.open("GET", url, true);
+                req.responseType = "arraybuffer";
+
+                req.onload = function(e) {
+                  var workbook = XLSX.read(req.response);
+
+                  /* DO SOMETHING WITH workbook HERE */
                     core_implementation(workbook);
-                })();
+                };
+
+                req.send();
 
                 // failed attempts in browser:
+
+                // (async() => {
+                //     const url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
+                //     const data = await (await fetch(url)).arrayBuffer();
+                //     /* data is an ArrayBuffer */
+                //     const workbook = XLSX.read(data);
+                //
+                //     /* DO SOMETHING WITH workbook HERE */
+                //     core_implementation(workbook);
+                // })();
+
                 // fetch(file_path)
                 //   .then((res) => {
                 //       let workbook = XLSX.read(res);
@@ -416,8 +433,6 @@
                 // })
 
                 // let workbook = XLSX.read(file_path);
-
-                console.log('here');
             }
             // ################################################################################################### MAIN:
             try {
