@@ -145,8 +145,23 @@
         <input type="file" id="file_hold_elem" name="file" style="display: none;"/>     <!-- tied to button above -->
     </div>
 
+<!--    table preview:-->
     <div class="table-responsive headings" style="height: 400px; width: 90%; font-size: 0.85em; margin-left: 5%;" id="table_wrap">
         <table class="table" id="preview_table"></table>
+    </div>
+
+<!--    User inputs and submit:-->
+    <div class="input_wrap">
+        <label class="btn-group box_shadow custom_label">X column name:</label>
+        <input class="form-control custom_input" type="text" id="x_col_name" style="color: darkslategray; height: 28px; width: 700px; display: inline-block; margin-bottom: 0; padding: 2px;">
+    </div>
+    <div class="input_wrap">
+        <label class="btn-group box_shadow custom_label">Y column name:</label>
+        <input class="form-control custom_input" type="text" id="y_col_name" style="color: darkslategray; height: 28px; width: 700px; display: inline-block; margin-bottom: 0; padding: 2px;">
+    </div>
+    <!--          SUBMIT:-->
+    <div class="input_wrap">
+        <button class="btn" style="display: inline-block; float: left; clear: both; margin: 5px; padding: 8px; color: whitesmoke; border: 2px solid limegreen;" id="submit_button">SUBMIT</button>
     </div>
 
     <div style="display: inline-block; width: fit-content; height: 35px; float: left; clear: both; margin-top: 5px; margin-bottom: 5px; margin-left: 5%;">
@@ -261,14 +276,24 @@
                 $('#table_wrap').show();    // need to remove/replace in production as this custom id name is just not gonna fly for other purposes..
             }
 
+            function submit_form() {
+                x_col_name = $('#x_col_name').val();
+                y_col_name = $('#y_col_name').val();
+
+                if (workbook) {
+                    core_implementation(workbook);
+                } else {
+                    alert('please upload file first!');
+                    return false;
+                }
+            }
+
             function ProccessExcel(data) {
                 // gotten from https://www.aspsnippets.com/Articles/Read-Parse-Excel-File-XLS-and-XLSX-using-jQuery.aspx and modified
                 //Read the Excel File data.
-                let workbook = XLSX.read(data, {
+                workbook = XLSX.read(data, {
                     type: 'binary'
                 });
-
-                core_implementation(workbook);
 
                 return false;
             }
@@ -391,13 +416,15 @@
                 y_col_name = "medv";
                 let file_path = 'BostonHousing.csv';
 
-
                 $('#table_wrap').hide();
+                $('#x_col_name').val(x_col_name);
+                $('#y_col_name').val(y_col_name);
 
-                let clean_data = getData();
-                console.log(clean_data);
 
                 // failed attempts in browser:
+
+                // let clean_data = getData();
+                // console.log(clean_data);
 
                 // var url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
                 // /* set up async GET request */
@@ -461,7 +488,7 @@
             try {
                 // Initialize globals:
                 var system_admin = 'Andrey Lisovskiy';
-                var x_col_name, y_col_name;
+                var x_col_name, y_col_name, workbook;
                 main();
             }
             catch (err) {
