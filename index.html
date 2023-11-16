@@ -125,7 +125,7 @@
 
 
 
-            All code related for this project can be found at "public" GITHUB repository here:<a href="https://github.com/andreylisovskiy/polyfit.git">https://github.com/andreylisovskiy/polyfit.git</a>
+            All code related for this project can be found at "public" GITHUB repository here:<a href="https://github.com/andreylisovskiy/linear_regress.git">https://github.com/andreylisovskiy/linear_regress.git</a>
         </p>
     </div>
 
@@ -372,7 +372,7 @@
                 $('#table_wrap').hide();
 
                 (async() => {
-                    const url = "https://linear-regress.pages.dev/BostonHousing.csv";
+                    const url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
                     const data = await (await fetch(url)).arrayBuffer();
                     /* data is an ArrayBuffer */
                     const workbook = XLSX.read(data);
