@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--****** This meta tag bellow is absolutely needed if you want to make your JQuery code run on IE9 and IE10!!! *******-->
+    <meta http-equiv="X-UA-Compatible" content="IE=10;IE=9;FF=3;OtherUA=4" />
+    <!--# force browser to load file from server:-->
+    <meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0" />
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+    <title>Linear Regression</title>
+
+    <!--# # Bootstrap:-->
+    <link rel="stylesheet" href="./bootstrap-4.3.1-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./bootstrap-4.3.1-dist/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./bootstrap-material-design/css/roboto.min.css">
+    <link rel="stylesheet" href="./bootstrap-material-design/css/material-fullpalette.min.css">
+    <link rel="stylesheet" href="./bootstrap-material-design/css/ripples.min.css">
+
+    <!--# # My custom CSS:-->
+    <link rel="stylesheet" type="text/css" href="./CSS/live_schedule_template.css">
+
+    <style>
+        body {
+            background-color: white;
+        }
+
+        #my_chart {
+            display: inline-block; float: left; clear: both; width: 100%; height: 800px;
+        }
+
+        #submit_button {
+            transition-duration: 0.2s; background-color: rgba(19, 134, 19, 0.8); height: 50px; width: 150px; font-size: 2em; border-radius: 9px;
+            font-family: Geneva, fantasy, Optima, "Courier New"; padding: 10px; line-height: 0.5em;
+        }
+        #submit_button:hover {
+            background-color: limegreen;
+        }
+
+        code {
+          background-color: rgba(114, 215, 174, 0.3);
+          border-radius: 3px;
+          font-family: courier, monospace;
+          padding: 0 3px;
+        }
+
+        /*#drop-area*/
+        /*{*/
+        /*    border:2px dotted #0B85A1;*/
+        /*    width:400px;*/
+        /*    color:#92AAB0;*/
+        /*    text-align:left;vertical-align:middle;*/
+        /*    padding:10px 10px 10 10px;*/
+        /*    margin-bottom:10px;*/
+        /*    font-size:200%;*/
+        /*    float: left;*/
+        /*    clear: both;*/
+        /*    display: inline-block;*/
+        /*    horiz-align: center;*/
+        /*    margin-left: 40%;*/
+        /*}*/
+
+        .box_shadow {
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15), 0 3px 7px 0 rgba(0, 0, 0, 0.15);
+        }
+        .box_shadow:hover {
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 15px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .custom_label {
+            font-size: 1.6em; padding: 3px; background-color: rgba(255, 100, 34, 0.3); font-family: Geneva, fantasy, Optima, "Courier New"; letter-spacing: 2px;
+            margin-top: 0; margin-bottom: 3px; display: inline-block; clear: both;
+        }
+
+        .custom_input {
+            margin-left: 5px;
+        }
+
+        .input_wrap {
+            display: inline-block; float: left; clear: both;
+        }
+
+        .headings {
+            width: 100%; margin-top: 5px; margin-bottom: 10px; float: left; display: inline-block; clear: both; text-align: center;
+            font-family: Sans-serif, Geneva, fantasy, Optima; padding: 10px; letter-spacing: 5px; font-size: 2em;
+        }
+
+        p {
+            font-family: Sans-serif, Geneva, fantasy, Optima; padding: 10px; letter-spacing: 1px; color: #5b7793;
+        }
+
+        img {
+            max-width: 90%;
+        }
+
+    </style>
+</head>
+
+<body id="boot-override">
+    <div class="headings" style="margin-top: 0; padding-top: 0;">
+        <H1>In-browser Linear Regression (SheetJS + Simple Statistics)</H1>
+    </div>
+
+    <div>
+        <p>
+            First of all, coming from mostly Python lifestyle into this more extensive use of JS, I could tell you that it was a lot easier to import modules and access system feature in Python
+            as opposed to doing the same in-browser JS... Since Python works in system/server level, it has more access and privileges then importing modules and serving/loading files at
+            client/browser side.
+            The task itself was super self-explanatory and simple in my head. I had all the dots connected in my head. So, I though it was supposed to be a breeze. But what took me a lot of time
+            is making sure I can prove the concept on the web.
+            I wasted a lot of time trying to make XLSX read in a local project file under relative path... It kept getting stalled at reading line where I was not even getting console prints past
+            these calls. And on other more promising calls using:<br>
+            <code>let workbook = XLSX.read(file_path);</code><br><br>
+            It was giving me this error message where it looks like "t" object was being miss-used inside XLSX.full.min.js because it failed to read the file in:<br>
+            <img src="./media/image_1.PNG"><br><br>
+            Fetch method was also getting blocked:<br><br>
+            <img src="./media/image_2.PNG"><br><br>
+            Anyways, enough on this, it was just due to my lack of experience trying to read local files into the browser without human interaction. It just gets blocked by browser for security
+            purposes. I have used XLSX before via a "dropdown" or "file explorer" input options successfully before where a user is actually requesting that upload, which makes it allowable behavior.
+            Thus, below on this page I have implemented the file explorer option which you can use to upload that excel/csv file with Boston Housing dataset.
+
+
+
+            All code related for this project can be found at "public" GITHUB repository here:<a href="https://github.com/andreylisovskiy/polyfit.git">https://github.com/andreylisovskiy/polyfit.git</a>
+        </p>
+    </div>
+
+    <!--    get user input:-->
+    <!--    <div id="drop-area">Drag & Drop Files Here</div>-->
+    <div class="headings">
+        <H1>TEST DRIVE..</H1>
+    </div>
+
+    <div style="width: fit-content; height: fit-content; margin-top: 1px; float: left; clear: both;display: inline-block; padding-top: 3px; padding-bottom: 0;" class="box_shadow">
+        <button class="btn btn-primary table_interact_buttons" type="button" id="upload_overrides" data-toggle="tooltip" title="upload overrides" style="height: 35px; width: 35px;">
+            <i class="fa fa-upload" style="font-size: 1.5em;"></i>
+        </button>
+        <input type="file" id="file_hold_elem" name="file" style="display: none;"/>     <!-- tied to button above -->
+    </div>
+
+    <div class="table-responsive headings" style="height: 400px; width: 90%; font-size: 0.85em; margin-left: 5%;" id="table_wrap">
+        <table class="table" id="preview_table"></table>
+    </div>
+
+    <div style="display: inline-block; width: fit-content; height: 35px; float: left; clear: both; margin-top: 5px; margin-bottom: 5px; margin-left: 5%;">
+        <p id="expression" style="padding: 5px; margin: 0; color: darkslategray; opacity: 80%;"></p>
+    </div>
+
+    <div id='my_chart' style="opacity: 80%;"><!-- Plotly chart will be drawn inside this DIV --></div>
+<!--    <canvas id='my_chart'>&lt;!&ndash; chart will be drawn inside this DIV &ndash;&gt;</canvas>-->
+
+<!--    &lt;!&ndash;    ERROR message:&ndash;&gt;-->
+<!--    <div class="margin_15" id="Error_div" style="display: none;">-->
+<!--        <p>-->
+<!--            <img src="/css_js_media/media/error_image.png" alt="Error Sign" style="float:left;width:50px;height:50px;margin-left: 10%">-->
+<!--                <ins id="Error_message" class="error_message alert-message"></ins>-->
+<!--        </p>-->
+<!--    </div>-->
+
+    <!--################################################################################################# END OF HTML-->
+    <!--# SCRIPT IMPORTS:-->
+    <!--For bootstrap:-->
+    <script src="./JS/jQuery/jquery-3.7.1.min.js" type="text/javascript"></script>
+    <script src="./bootstrap-4.3.1-dist/js/bootstrap.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.js" integrity="sha512-6LKCH7i2+zMNczKuCT9ciXgFCKFp3MevWTZUXDlk7azIYZ2wF5LRsrwZqO7Flt00enUI+HwzzT5uhOvy6MNPiA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <!--ChartJS:-->
+<!--    <script src="./JS/Chart.js-2.9.4/Chart.min.js" type="text/javascript"></script>-->
+<!--    Require JS-->
+<!--    <script data-main="scripts/main" src="./JS/require.js"></script>-->
+    <script src="./node_modules/plotly.js-dist/plotly.js"></script>
+    <!-- add the shim first -->
+    <script type="text/javascript" src="./JS/shim.min.js"></script>
+    <!-- after the shim is referenced, add the library -->
+    <script type="text/javascript" src="./JS/xlsx.full.min.js"></script>
+<!--    <script src="./node_modules/simple-statistics/dist/simple-statistics.min.js" type="text/javascript"></script>-->
+    <script src='./JS/simple-statistics.min.js'></script>
+    <!--my JS:-->
+<!--    <script src="./JS/js_code_browser.js" type="text/javascript"></script>-->
+    <script src="./JS/my_js.js"></script>
+
+    <!--# SCRIPTING:-->
+    <script type="text/javascript">    // ################################################################################ JAVASCRIPT + JQUERY:
+        $(document).ready(function() {
+            // ************************************************************************************************* Events:
+
+            // // from: https://phppot.com/jquery/jquery-drag-and-drop-image-upload/
+            // $("#drop-area").on('dragenter', function (e){
+            //     e.preventDefault();
+            // });
+            // $("#drop-area").on('dragover', function (e){
+            //     e.preventDefault();
+            // });
+            // $("#drop-area").on('drop', function (e){
+            //     e.preventDefault();
+            // let file = e.originalEvent.dataTransfer.files;
+            // createFormData(file);
+            // });
+
+            $("#submit_button").off().click(function() {
+                submit_form();
+            });
+
+            $("#upload_overrides").off().click(function () {
+                // $('#file_hold_elem').trigger('click');   replaced with next line because for some reason using $ browser gives you some user permission crap..
+                jQuery('#file_hold_elem').trigger('click');
+            });
+
+            $("body").on("change", "#file_hold_elem", function () {
+                // gotten from https://www.aspsnippets.com/Articles/Read-Parse-Excel-File-XLS-and-XLSX-using-jQuery.aspx and modified
+                //Reference the file_hold_elem element.
+                var file_hold_elem = $("#file_hold_elem")[0];
+                console.log(file_hold_elem.files[0]);
+
+                //Validate whether File is valid Excel file.
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv)$/;
+                if (regex.test(file_hold_elem.value.toLowerCase())) {
+                    if (typeof (FileReader) != "undefined") {
+                        var reader = new FileReader();
+
+                        // console.log('File to process.. ' + file_hold_elem.value.toLowerCase());
+
+                        //For Browsers other than IE.
+                        if (reader.readAsBinaryString) {
+                            reader.onload = function (e) {
+                                ProccessExcel(e.target.result);
+                            };
+                            reader.readAsBinaryString(file_hold_elem.files[0]);
+                        } else {
+                            //For IE Browser.   - I just copied this code and left as is. However, I do not support ancient IE with my tools any longer.
+                            reader.onload = function (e) {
+                                var data = "";
+                                var bytes = new Uint8Array(e.target.result);
+                                for (var i = 0; i < bytes.byteLength; i++) {
+                                    data += String.fromCharCode(bytes[i]);
+                                }
+                                ProccessExcel(data);
+                            };
+                            reader.readAsArrayBuffer(file_hold_elem.files[0]);
+                        }
+                    } else {
+                        alert("This browser does not support HTML5.");
+                    }
+                } else {
+                    alert("Please upload a valid Excel file.");
+                }
+                $("#file_hold_elem").val('');
+            });
+
+            // ********************************************************************************************** functions:
+            function populate_html_table(worksheet, table_id) {
+                // populate HTML table:
+                const table_ = XLSX.utils.sheet_to_html(worksheet);
+                $('#'+table_id).html(table_);
+                $('#table_wrap').show();    // need to remove/replace in production as this custom id name is just not gonna fly for other purposes..
+            }
+
+            function ProccessExcel(data) {
+                // gotten from https://www.aspsnippets.com/Articles/Read-Parse-Excel-File-XLS-and-XLSX-using-jQuery.aspx and modified
+                //Read the Excel File data.
+                let workbook = XLSX.read(data, {
+                    type: 'binary'
+                });
+
+                core_implementation(workbook);
+
+                return false;
+            }
+
+            function core_implementation(workbook) {
+                let first_sheet_name = workbook.SheetNames[0];  // Fetch the name of First Sheet
+                let worksheet = workbook.Sheets[first_sheet_name];  // get first sheet
+
+                populate_html_table(worksheet, 'preview_table');
+
+                //Read all rows from First Sheet into a JSON array.
+                // let excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+                // let excelRows = XLSX.utils.sheet_to_json(worksheet, {header:0});
+
+                let lin_coeff = get_linear_coef(worksheet, x_col_name, y_col_name);
+
+                // populate html expression:
+                let expression_equation = 'y='+lin_coeff['m']+'x+'+lin_coeff['b'];
+                $('#expression').html(expression_equation);
+                console.log(lin_coeff);
+
+                // get data x and y separately:
+                let aoo = XLSX.utils.sheet_to_json(worksheet);
+                let x = aoo.map(row => (row[x_col_name]));
+                let y_data = aoo.map(row => (row[y_col_name]));
+
+                // generate y-points for linear regression line:
+                let line_equation = ss.linearRegressionLine(lin_coeff);
+                let y_line = eval_expression(line_equation, x);     // evaluates linear equation and gets us our Y points
+                console.log(y_line);
+
+                plot_comparison(x, y_data, x, y_line);
+
+                return false;
+            }
+
+            function plot_comparison(x_data, y_data, x_line, y_line) {
+                let trace1 = {
+                x: x_data,
+                y: y_data,
+                mode: 'markers',
+                name: 'data',
+                marker: {
+                    color: 'rgba(8,146,63,0.85)',
+                    size: 12
+                    }
+                };
+
+                let trace3 = {
+                x: x_line,
+                y: y_line,
+                mode: 'lines',
+                name: 'linear reg',
+                line: {
+                    color: 'rgba(201,86,3,0.83)',
+                    width: 3
+                    }
+                };
+
+                let data = [trace1, trace3];
+
+                let layout = {
+                  title: 'Linear Regression fit'
+                };
+
+                Plotly.newPlot('my_chart', data, layout);
+            }
+
+            function read_file_wrap(workbook) {
+                console.log(workbook);
+                /* get first worksheet */
+                let worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                console.log(worksheet);
+                //Fetch the name of First Sheet.
+                let firstSheet = workbook.SheetNames[0];
+                console.log(firstSheet);
+
+                //Read all rows from First Sheet into a JSON array.
+                let excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+                console.log(excelRows);
+
+                for (let i = 0; i < excelRows.length; i++) {
+                    console.log(excelRows[i]['lot']);
+                }
+                return false;
+            }
+
+            function file_to_wb(file, callback) {
+              let reader = new FileReader();
+              reader.onload = function(e) {
+                /* e.target.result is an ArrayBuffer */
+                callback(XLSX.read(e.target.result));
+              };
+              reader.readAsArrayBuffer(file);
+            }
+
+            function main() {
+                // define defaults:
+                x_col_name = "crim";
+                y_col_name = "medv";
+                let file_path = 'BostonHousing.csv';
+
+
+                $('#table_wrap').hide();
+
+                // failed attempts in browser:
+                // fetch(file_path)
+                //   .then((res) => {
+                //       let workbook = XLSX.read(res);
+                //         core_implementation(workbook);
+                //   })
+                //   .catch((e) => console.error(e));
+
+                // let workbook = XLSX.read(file_path);
+                // core_implementation(workbook);
+                //
+                // let file_ = new File(["foo"], file_path, {
+                //   type: "text/plain",
+                // });
+                // console.log(file_);
+
+
+                // let workbook = XLSX.readFile(file_path);
+                // var workbook = XLSX.read(file_path);
+                // let workbook = XLSX.read(file_path);
+                // console.log(workbook);
+                // ProccessExcel(workbook);
+
+                // file_to_wb(file_, read_file_wrap);
+                // file_to_wb(file_, function(workbook) {
+                //     console.log(workbook);
+                //     /* get first worksheet */
+                //     let worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                //     console.log(worksheet);
+                //     //Fetch the name of First Sheet.
+                //     let firstSheet = workbook.SheetNames[0];
+                //     console.log(firstSheet);
+                // })
+
+                // let workbook = XLSX.read(file_path);
+
+                console.log('here');
+            }
+            // ################################################################################################### MAIN:
+            try {
+                // Initialize globals:
+                var system_admin = 'Andrey Lisovskiy';
+                var x_col_name, y_col_name;
+                main();
+            }
+            catch (err) {
+                $("#Error_div").attr({
+                    "style" : "display: contents;"
+                });
+                $('#Error_message').html('Page load ERROR: ' + err.name + ':' + err.message + ' Contact system admin: ' + system_admin);
+            }
+        });
+    </script>
+
+</body>
+</html>
