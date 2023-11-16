@@ -6,19 +6,6 @@
 // var workbook = XLSX.readFile(file_path);
 // core_implementation_2(workbook);
 
-// function csv_to_sheet(file_path) {
-//     // read_file:
-//     // alert(file_path);
-//     let workbook = XLSX.readFile(file_path);
-//     /* get first worksheet */
-//     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-//     /* generate and display HTML */
-//     const table = XLSX.utils.sheet_to_html(worksheet);
-//     console.log(table);
-//
-//     return worksheet
-// }
-
 function eval_expression(equation_line, x_points) {
     // const evaluate = node.evaluate({x: 3});
     let y_array = [];
@@ -61,4 +48,17 @@ function get_column_array(worksheet, column_name) {
 //     console.log(y_line);
 //     console.log('done');
 //
+// }
+
+// function csv_to_sheet(file_path) {
+//     // read_file:
+//     // alert(file_path);
+//     let workbook = XLSX.readFile(file_path);
+//     /* get first worksheet */
+//     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+//     /* generate and display HTML */
+//     const table = XLSX.utils.sheet_to_html(worksheet);
+//     console.log(table);
+//
+//     return worksheet
 // }

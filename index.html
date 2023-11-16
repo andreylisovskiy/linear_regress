@@ -156,9 +156,15 @@
             Statistics on other hand may only require some missing value and outlier treatment for good results, and there is no requirement for
             shuffling, normalization, or layer definition on user part, it just follows the same "model" (so to speak) every time which is a set-defined
             mathematical equation formula.<br>
-            In conclusion. I think I was able to do the simple task of connecting these components: CSV/XLSX files, XLSX, and Simple-Statistics to
-            get the output results that we want. Although, I believe this function/method could definitely use other relative methods to be built
-            to support some basic "data cleaning" that could be needed to get better results.. Like: missing "missing_value_imputation" and
+            These are the main/core functions inside index.html javascript file that I have built for this snippet's purpose:<br>
+            <img src="./media/image_5.PNG"><br><br>
+            And they are defined in <code>./JS/my_js.js</code><br>
+            <img src="./media/image_6.PNG"><br><br>
+            In conclusion. I that could complete the task of connecting these components: CSV/XLSX files, XLSX, and Simple-Statistics to
+            get the output results that we want in form of best fit linear equation coefficients, the formula, and evaluation object.
+            Although, there is more that could be done around this topic: like building comparable Tensorflow model and comparing on same data
+            between this method and Tensorflow's model results. I believe this function/method could also use other "helper" methods to be built
+            to support some basic "data cleaning" that could be needed for better results.. Like: missing "missing_value_imputation" and
             "outlier_drop" methods.<br><br>
             As usual, now its time to test drive this new functionality in playground bellow.
         </p>
@@ -330,15 +336,10 @@
                 worksheet = workbook.Sheets[first_sheet_name];  // get first sheet
                 populate_html_table(worksheet, 'preview_table');
 
-                return false;
+                // return false;
             }
 
             function main_func(worksheet) {
-
-                //Read all rows from First Sheet into a JSON array.
-                // let excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
-                // let excelRows = XLSX.utils.sheet_to_json(worksheet, {header:0});
-
                 // new custom function call that utilizes Simple-Statistics to get the coefficients:
                 let lin_coeff = linear_regres_coef(worksheet, x_col_name, y_col_name);
 
@@ -348,9 +349,6 @@
                 console.log(lin_coeff);
 
                 // get data x and y separately:
-                // let aoo = XLSX.utils.sheet_to_json(worksheet);
-                // let x = aoo.map(row => (row[x_col_name]));
-                // let y_data = aoo.map(row => (row[y_col_name]));
                 let x = get_column_array(worksheet, x_col_name);
                 let y_data = get_column_array(worksheet, y_col_name);
 
@@ -360,8 +358,6 @@
                 // console.log(y_line);
 
                 plot_comparison(x, y_data, x, y_line);
-
-                return false;
             }
 
             function plot_comparison(x_data, y_data, x_line, y_line) {
@@ -414,7 +410,6 @@
                 for (let i = 0; i < excelRows.length; i++) {
                     console.log(excelRows[i]['lot']);
                 }
-                return false;
             }
 
             function file_to_wb(file, callback) {
