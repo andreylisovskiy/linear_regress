@@ -42,10 +42,11 @@
         }
 
         code {
-          background-color: rgba(114, 215, 174, 0.3);
-          border-radius: 3px;
-          font-family: courier, monospace;
-          padding: 0 3px;
+            background-color: rgba(17, 23, 20, 0.76);
+            border-radius: 5px;
+            font-family: courier, monospace;
+            padding: 0 3px;
+            color:whitesmoke;
         }
 
         /*#drop-area*/
@@ -72,7 +73,7 @@
         }
 
         .custom_label {
-            font-size: 1.6em; padding: 3px; background-color: rgba(255, 100, 34, 0.3); font-family: Geneva, fantasy, Optima, "Courier New"; letter-spacing: 2px;
+            font-size: 1.3em; padding: 3px; background-color: rgba(255, 167, 34, 0.3); font-family: Geneva, fantasy, Optima, "Courier New"; letter-spacing: 2px;
             margin-top: 0; margin-bottom: 3px; display: inline-block; clear: both;
         }
 
@@ -84,13 +85,18 @@
             display: inline-block; float: left; clear: both;
         }
 
-        .headings {
+        .headings h1 {
             width: 100%; margin-top: 5px; margin-bottom: 10px; float: left; display: inline-block; clear: both; text-align: center;
-            font-family: Sans-serif, Geneva, fantasy, Optima; padding: 10px; letter-spacing: 5px; font-size: 2em;
+            font-family: cursive; padding: 10px; letter-spacing: 10px; font-size: 3em; font-weight: bold;
+        }
+
+        .headings h2 {
+            width: 100%; margin-top: 5px; margin-bottom: 10px; float: left; display: inline-block; clear: both; text-align: center;
+            font-family: cursive; padding: 10px; letter-spacing: 10px; font-size: 2em; font-weight: bold;
         }
 
         p {
-            font-family: Sans-serif, Geneva, fantasy, Optima; padding: 10px; letter-spacing: 1px; color: #5b7793;
+            font-family: "Lucida Console", Courier, monospace; padding: 10px; letter-spacing: 1px; color: #5b7793;
         }
 
         img {
@@ -102,33 +108,59 @@
 
 <body id="boot-override" style="padding-left: 5%; padding-right: 5%;">
     <div class="headings" style="margin-top: 0; padding-top: 0;">
-        <H1>Linear Regression (SheetJS + Simple Statistics)</H1>
+        <h1>Linear Regression</h1>
+        <h2>(SheetJS + Simple Statistics)</h2>
     </div>
 
     <div>
         <p>
             All code related for this project can be found at "public" GITHUB repository here:<a href="https://github.com/andreylisovskiy/linear_regress.git">https://github.com/andreylisovskiy/linear_regress.git</a>
             <br><br><br>
-            Coming from mostly Python lifestyle, where I have spent most of my last few years, into this more extensive use of JS, where it is now used not only to change web elements
-            on my web app but also to do more data processing, I could tell you that it was a lot easier to import modules and access system feature in Python
-            as opposed to doing the same in-browser JS... Since Python works in system/server level, it has more access and privileges and rights than importing modules and loading files from
-            client/browser side with JS.<br>
-            It was quit a change for me as for my prior written tools I have outsourced most of the data processing and heavy lifting to python via Ajax calls to server script.
-            And left the JS in browser use to minimum, mostly used for UI and page dynamics.<br>
-            The task was super self-explanatory and simple in my head. I had all the dots connected. So, I thought it was supposed to be a breeze. But what took me a lot of time
-            is trying to hack a browser to allow me to load a local file for testing purposes.
-            Too much time was just wasted trying to make browser and XLSX happy about reading a local project file with relative path in project. It kept getting stalled without producing any
-            errors. And on some other more promising tries when using:<br>
+            Coming from mostly Python lifestyle, where I have spent most of my last few years, into this more extensive use of JS, where I now
+            use it not only to dynamically change web elements on my web app but also for data processing, I could tell you that it was a little
+            rough on me.. I feel like it was a lot easier to import modules and access system feature in Python as opposed to doing the same in-browser
+            with JS... Because Python works at system/server level, it has more access, privileges, rights, than importing modules and loading files from
+            client/browser side with JS has.<br>
+            It was a change for me as for my prior written web apps I have outsourced most of the data processing and heavy lifting to python
+            via Ajax calls to server script.
+            And left JS in browser use to minimum, mostly used for UI and page dynamics.<br>
+            The task was super self-explanatory and simple in my head though. I had all the dots connected. So, I thought it was supposed to be a breeze.
+            But what took me a lot of time was trying to hack a browser to allow me to load a local file for testing and presentation purposes through browser.
+            Too much time was just wasted trying to make browser and XLSX happy about reading a local project file with relative path in project.
+            It kept getting stalled without producing any errors. And on some other more promising tries when using:<br>
             <code>let workbook = XLSX.read(file_path);</code><br><br>
-            it was giving me this error message where it looks like "t" object was being miss-used inside XLSX.full.min.js because it failed to read the file in:<br>
+            it was giving me this error message where it looks like "t" object was being miss-used inside "XLSX.full.min.js" because it failed to
+            read the file in:<br>
             <img src="./media/image_1.PNG"><br><br>
-            Fetch method was also getting blocked:<br><br>
-            <img src="./media/image_2.PNG"><br><br>
-            Anyways, enough on this, it was just due to my lack of experience trying to read local files into the browser without human interaction. It just gets blocked by browser for security
-            purposes. I have used XLSX before via a "dropdown" or "file explorer" input options successfully before where a user is actually requesting that upload, which makes it allowable behavior.
-            Thus, below on this page I have implemented the file explorer option which you can use to upload that excel/csv file with Boston Housing dataset.
-
-
+            The above error was also seen while trying to emulate/utilize the XLSX doc snippets on loading remote files via async fetch and XMLHttpRequest
+            methods.<br>
+            Anyways, enough of whining, it was probably due to my lack of experience trying to read local/remote files into the browser without human
+            interaction, but I just wanted to document and talk about my path to end goal solution and depict the most memorable times.
+            I understand that this functionality gets blocked by browser for security purposes. I have used XLSX before via a "dropdown" or
+            "file explorer" input options successfully thus have not had these file loading issues before.
+            Thus, in "Test Drive" section below, I have implemented the file explorer option which you can use to upload that excel/csv file with
+            Boston House pricing dataset in CSV or XLSX format. Here is the link if you wish to download a copy of that CSV:.<br>
+            <a href="https://linear-regress.pages.dev/data/BostonHousing.csv">https://linear-regress.pages.dev/data/BostonHousing.csv</a>
+            <br><br>
+            It took me few minutes to find file for Boston House pricing that was not missing data and had the same record order as
+            "http://lib.stat.cmu.edu/datasets/boston" page.<br><br>
+            The goal of this snippet is to replace Tensorflow ML lib components:<br>
+            <img src="./media/image_4.PNG"><br><br>
+            with much nicer XLSX lib + Simple-Statistics methodology, which allows to load real world data input formats and utilizes more light weight and much
+            simpler approach for a simple problem. Depiction of system:<br>
+            <img src="./media/image_3.PNG"><br><br>
+            There is a great difference between the two methodologies. Tensorflow is ML training on given feature and label using linear
+            regression model, while Simple Statistics is just using simple math methodology using single equation formula of "least sum
+            of squares". Also, ML frameworks usually require more data "treatment" due to training algorithms being more prone to skewness from un-clean
+            data. And the model schema design options are super broad and almost infinite. Simple
+            Statistics on other hand may only require some missing value and outlier treatment for good results, and there is no requirement for
+            shuffling, normalization, or layer definition on user part, it just follows the same "model" (so to speak) every time which is a set-defined
+            mathematical equation formula.<br>
+            In conclusion. I think I was able to do the simple task of connecting these components: CSV/XLSX files, XLSX, and Simple-Statistics to
+            get the output results that we want. Although, I believe this function/method could definitely use other relative methods to be built
+            to support some basic "data cleaning" that could be needed to get better results.. Like: missing "missing_value_imputation" and
+            "outlier_drop" methods.<br><br>
+            As usual, now its time to test drive this new functionality in playground bellow.
         </p>
     </div>
 
@@ -138,8 +170,9 @@
         <H1>TEST DRIVE..</H1>
     </div>
 
-    <div style="width: fit-content; height: fit-content; margin-top: 1px; float: left; clear: both;display: inline-block; padding-top: 3px; padding-bottom: 0;" class="box_shadow">
-        <button class="btn btn-primary table_interact_buttons" type="button" id="upload_overrides" data-toggle="tooltip" title="upload overrides" style="height: 35px; width: 35px;">
+    <div style="width: fit-content; height: fit-content; margin-top: 1px; float: left; display: inline-block; padding-top: 3px; padding-bottom: 0;">
+        <label class="btn-group box_shadow custom_label" style="display: inline-block; float: left; margin-right: 15px;">First upload file:</label>
+        <button class="btn btn-primary table_interact_buttons" type="button" id="upload_overrides" data-toggle="tooltip" title="upload overrides" style="height: 35px; width: 100px;">
             <i class="fa fa-upload" style="font-size: 1.5em;"></i>
         </button>
         <input type="file" id="file_hold_elem" name="file" style="display: none;"/>     <!-- tied to button above -->
@@ -279,8 +312,8 @@
                 x_col_name = $('#x_col_name').val();
                 y_col_name = $('#y_col_name').val();
 
-                if (workbook) {
-                    core_implementation(workbook);
+                if (worksheet) {
+                    main_func(worksheet);
                 } else {
                     alert('please upload file first!');
                     return false;
@@ -293,20 +326,21 @@
                 workbook = XLSX.read(data, {
                     type: 'binary'
                 });
+                let first_sheet_name = workbook.SheetNames[0];  // Fetch the name of First Sheet
+                worksheet = workbook.Sheets[first_sheet_name];  // get first sheet
                 populate_html_table(worksheet, 'preview_table');
 
                 return false;
             }
 
-            function core_implementation(workbook) {
-                let first_sheet_name = workbook.SheetNames[0];  // Fetch the name of First Sheet
-                let worksheet = workbook.Sheets[first_sheet_name];  // get first sheet
+            function main_func(worksheet) {
 
                 //Read all rows from First Sheet into a JSON array.
                 // let excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
                 // let excelRows = XLSX.utils.sheet_to_json(worksheet, {header:0});
 
-                let lin_coeff = get_linear_coef(worksheet, x_col_name, y_col_name);
+                // new custom function call that utilizes Simple-Statistics to get the coefficients:
+                let lin_coeff = linear_regres_coef(worksheet, x_col_name, y_col_name);
 
                 // populate html expression:
                 let expression_equation = 'y='+lin_coeff['m']+'x+'+lin_coeff['b'];
@@ -314,9 +348,11 @@
                 console.log(lin_coeff);
 
                 // get data x and y separately:
-                let aoo = XLSX.utils.sheet_to_json(worksheet);
-                let x = aoo.map(row => (row[x_col_name]));
-                let y_data = aoo.map(row => (row[y_col_name]));
+                // let aoo = XLSX.utils.sheet_to_json(worksheet);
+                // let x = aoo.map(row => (row[x_col_name]));
+                // let y_data = aoo.map(row => (row[y_col_name]));
+                let x = get_column_array(worksheet, x_col_name);
+                let y_data = get_column_array(worksheet, y_col_name);
 
                 // generate y-points for linear regression line:
                 let line_equation = ss.linearRegressionLine(lin_coeff);
@@ -336,7 +372,7 @@
                 name: 'data',
                 marker: {
                     color: 'rgba(8,146,63,0.85)',
-                    size: 12
+                    size: 10
                     }
                 };
 
@@ -346,15 +382,17 @@
                 mode: 'lines',
                 name: 'linear reg',
                 line: {
-                    color: 'rgba(201,86,3,0.83)',
-                    width: 3
+                    color: 'rgba(201,86,3,0.87)',
+                    width: 4
                     }
                 };
 
                 let data = [trace1, trace3];
 
                 let layout = {
-                  title: 'Linear Regression fit'
+                    title: 'Linear Regression fit',
+                    xaxis: {title: x_col_name},
+                    yaxis: {title: y_col_name},
                 };
 
                 Plotly.newPlot('my_chart', data, layout);
@@ -390,7 +428,7 @@
 
             async function getData() {
               /* fetch file */
-              const carsDataResponse = await fetch("https://linear-regress.pages.dev/BostonHousing.xlsx");
+              const carsDataResponse = await fetch("https://linear-regress.pages.dev/data/BostonHousing.csv");
               /* get file data (ArrayBuffer) */
               const carsDataAB = await carsDataResponse.arrayBuffer();
               /* parse */
@@ -408,11 +446,11 @@
               return cleaned;
             }
 
-            function main() {
+            function init_func() {
                 // define defaults:
                 x_col_name = "crim";
                 y_col_name = "medv";
-                let file_path = 'BostonHousing.csv';
+                let file_path = './data/BostonHousing.csv';
 
                 $('#table_wrap').hide();
                 $('#x_col_name').val(x_col_name);
@@ -424,7 +462,7 @@
                 // let clean_data = getData();
                 // console.log(clean_data);
 
-                // var url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
+                // var url = "https://linear-regress.pages.dev/data/BostonHousing.xlsx";
                 // /* set up async GET request */
                 // var req = new XMLHttpRequest();
                 // req.open("GET", url, true);
@@ -438,7 +476,7 @@
                 // req.send();
 
                 // (async() => {
-                //     const url = "https://linear-regress.pages.dev/BostonHousing.xlsx";
+                //     const url = "https://linear-regress.pages.dev/data/BostonHousing.xlsx";
                 //     const data = await (await fetch(url)).arrayBuffer();
                 //     /* data is an ArrayBuffer */
                 //     const workbook = XLSX.read(data);
@@ -486,8 +524,8 @@
             try {
                 // Initialize globals:
                 var system_admin = 'Andrey Lisovskiy';
-                var x_col_name, y_col_name, workbook;
-                main();
+                var x_col_name, y_col_name, workbook, worksheet;
+                init_func();
             }
             catch (err) {
                 $("#Error_div").attr({

@@ -28,11 +28,16 @@ function eval_expression(equation_line, x_points) {
     return y_array;
 }
 
-function get_linear_coef(worksheet, x_col_name, y_col_name) {
+function linear_regres_coef(worksheet, x_col_name, y_col_name) {
     let aoo = XLSX.utils.sheet_to_json(worksheet);
     // "x" and "y" we want to pull from the data for linear regression input:
     let data_ = aoo.map(row => ([row[x_col_name], row[y_col_name]]));
     return ss.linearRegression(data_);     // feed it what it wants/needs
+}
+
+function get_column_array(worksheet, column_name) {
+    let aoo = XLSX.utils.sheet_to_json(worksheet);
+    return aoo.map(row => (row[column_name]));
 }
 
 // function core_implementation_2(workbook) {
