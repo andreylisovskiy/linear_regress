@@ -94,15 +94,15 @@
         }
 
         img {
-            max-width: 90%;
+            max-width: 90%; max-height: 350px;
         }
 
     </style>
 </head>
 
-<body id="boot-override">
+<body id="boot-override" style="padding-left: 5%; padding-right: 5%;">
     <div class="headings" style="margin-top: 0; padding-top: 0;">
-        <H1>In-browser Linear Regression (SheetJS + Simple Statistics)</H1>
+        <H1>Linear Regression (SheetJS + Simple Statistics)</H1>
     </div>
 
     <div>
@@ -238,13 +238,12 @@
                 if (regex.test(file_hold_elem.value.toLowerCase())) {
                     if (typeof (FileReader) != "undefined") {
                         var reader = new FileReader();
-
                         // console.log('File to process.. ' + file_hold_elem.value.toLowerCase());
 
                         //For Browsers other than IE.
                         if (reader.readAsBinaryString) {
                             reader.onload = function (e) {
-                                ProccessExcel(e.target.result);
+                                upload_file(e.target.result);
                             };
                             reader.readAsBinaryString(file_hold_elem.files[0]);
                         } else {
@@ -255,7 +254,7 @@
                                 for (var i = 0; i < bytes.byteLength; i++) {
                                     data += String.fromCharCode(bytes[i]);
                                 }
-                                ProccessExcel(data);
+                                upload_file(data);
                             };
                             reader.readAsArrayBuffer(file_hold_elem.files[0]);
                         }
@@ -288,12 +287,13 @@
                 }
             }
 
-            function ProccessExcel(data) {
+            function upload_file(data) {
                 // gotten from https://www.aspsnippets.com/Articles/Read-Parse-Excel-File-XLS-and-XLSX-using-jQuery.aspx and modified
                 //Read the Excel File data.
                 workbook = XLSX.read(data, {
                     type: 'binary'
                 });
+                populate_html_table(worksheet, 'preview_table');
 
                 return false;
             }
@@ -301,8 +301,6 @@
             function core_implementation(workbook) {
                 let first_sheet_name = workbook.SheetNames[0];  // Fetch the name of First Sheet
                 let worksheet = workbook.Sheets[first_sheet_name];  // get first sheet
-
-                populate_html_table(worksheet, 'preview_table');
 
                 //Read all rows from First Sheet into a JSON array.
                 // let excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
